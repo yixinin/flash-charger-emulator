@@ -239,7 +239,7 @@ class Store {
     if (count > currentCount) {
       // 添加新的充电桩配置
       for (let i = currentCount; i < count; i++) {
-        this.chargerConfigs.push({ batteryCapacity: 1000, gunAPower: 500, gunBPower: 500 });
+        this.chargerConfigs.push({ batteryCapacity: 1000, gunAPower: 500, gunBPower: 500, gridPowerLimit: 500 });
       }
     } else if (count < currentCount) {
       // 移除多余的充电桩配置
@@ -356,8 +356,13 @@ class Store {
 
     // 自动连接汽车到空闲充电枪
     for (let i = 0; i < availableGuns.length; i++) {
-      const { chargerId, gun } = availableGuns[i];
+      const gunItem = availableGuns[i];
+      if (!gunItem) continue;
+
+      const { chargerId, gun } = gunItem;
       const car = availableCars[i];
+
+      if (!car) continue;
 
       gun.isCharging = true;
       gun.car = car;
