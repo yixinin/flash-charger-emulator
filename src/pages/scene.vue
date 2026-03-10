@@ -104,7 +104,7 @@
                     <v-progress-linear
                       :model-value="getGunPowerPercentage(gun.power, gun.maxPower)"
                       color="primary"
-                      height="16"
+                      height="20"
                       class="output-power-bar"
                     >
                       <template v-slot:default>
@@ -120,7 +120,7 @@
                       <v-progress-linear
                         :model-value="getGunGridPowerPercentage(gun, charger)"
                         color="blue"
-                        height="10"
+                        height="14"
                         class="source-bar"
                       >
                         <template v-slot:default>
@@ -133,7 +133,7 @@
                       <v-progress-linear
                         :model-value="getGunBatteryPowerPercentage(gun, charger)"
                         color="green"
-                        height="10"
+                        height="14"
                         class="source-bar"
                       >
                         <template v-slot:default>
@@ -154,7 +154,7 @@
                       <v-progress-linear
                         :model-value="gun.car.currentSOC"
                         :color="getCarSocColor(gun.car.currentSOC)"
-                        height="14"
+                        height="18"
                         class="soc-bar"
                       >
                         <template v-slot:default>
@@ -350,14 +350,14 @@
     background-color: #f5f5f5;
     border-radius: 8px;
     display: flex;
-    padding: 20px;
-    gap: 20px;
+    padding: 24px;
+    gap: 24px;
   }
   
   .charging-station {
     flex: 1;
     display: flex;
-    gap: 15px;
+    gap: 20px;
     flex-wrap: wrap;
   }
   
@@ -365,8 +365,8 @@
     background-color: white;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 15px;
-    min-width: 280px;
+    padding: 20px;
+    min-width: 320px;
     flex: 1;
   }
   
@@ -374,23 +374,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
   }
   
   /* 储能电池电量进度条 - 占满组件 */
   .battery-soc-fullwidth {
-    margin-bottom: 15px;
-    padding: 10px;
+    margin-bottom: 20px;
+    padding: 12px;
     background-color: #f5f5f5;
-    border-radius: 4px;
+    border-radius: 6px;
   }
   
   .battery-label {
-    font-size: 12px;
+    font-size: 14px;
     color: #666;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
   
   .battery-progress {
@@ -406,25 +406,25 @@
   
   /* 储能电池功率双向进度条 - 左右对称 */
   .battery-power-section {
-    margin-bottom: 15px;
-    padding: 10px;
+    margin-bottom: 20px;
+    padding: 16px;
     background-color: #f9f9f9;
-    border-radius: 4px;
+    border-radius: 6px;
   }
   
   .battery-power-label {
-    font-size: 12px;
+    font-size: 15px;
     color: #666;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
   
   .power-status-badge {
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 3px;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
     font-weight: bold;
   }
   
@@ -451,7 +451,7 @@
   .center-fixed-bar-wrapper {
     display: flex;
     align-items: center;
-    height: 24px;
+    height: 32px;
     background-color: #f5f5f5;
   }
   
@@ -477,15 +477,15 @@
   
   /* 中心固定的0值 */
   .center-fixed-zero {
-    width: 30px;
+    width: 40px;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #fff;
-    border-left: 1px solid #bbb;
-    border-right: 1px solid #bbb;
-    font-size: 11px;
+    border-left: 2px solid #bbb;
+    border-right: 2px solid #bbb;
+    font-size: 14px;
     font-weight: bold;
     color: #666;
     flex-shrink: 0;
@@ -503,17 +503,17 @@
   .center-fixed-bar.discharge {
     background-color: #4caf50;
     justify-content: flex-start;
-    padding-left: 8px;
+    padding-left: 10px;
   }
   
   .center-fixed-bar.charge {
     background-color: #2196f3;
     justify-content: flex-end;
-    padding-right: 8px;
+    padding-right: 10px;
   }
   
   .center-fixed-text {
-    font-size: 11px;
+    font-size: 13px;
     color: white;
     font-weight: bold;
     white-space: nowrap;
@@ -521,22 +521,22 @@
   
   /* 总功率监控 */
   .power-bar-container {
-    padding: 10px;
+    padding: 16px;
   }
   
   .power-bar-label {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: #333;
   }
   
   .power-bar {
-    border-radius: 4px;
+    border-radius: 6px;
   }
   
   .power-bar-text {
-    font-size: 12px;
+    font-size: 14px;
     color: white;
     font-weight: bold;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
@@ -546,9 +546,9 @@
   .bidirectional-power-bar {
     display: flex;
     align-items: center;
-    height: 20px;
+    height: 28px;
     background-color: #e0e0e0;
-    border-radius: 4px;
+    border-radius: 6px;
     overflow: hidden;
     position: relative;
   }
@@ -559,12 +559,12 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding-left: 5px;
+    padding-left: 8px;
     transition: width 0.3s ease;
   }
   
   .power-bar-center {
-    width: 2px;
+    width: 3px;
     height: 100%;
     background-color: #666;
     flex-shrink: 0;
@@ -576,13 +576,13 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding-right: 5px;
+    padding-right: 8px;
     transition: width 0.3s ease;
   }
   
   .power-bar-text-negative,
   .power-bar-text-positive {
-    font-size: 11px;
+    font-size: 13px;
     color: white;
     font-weight: bold;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
@@ -591,8 +591,8 @@
   
   .power-bar-status {
     text-align: center;
-    margin-top: 5px;
-    font-size: 12px;
+    margin-top: 8px;
+    font-size: 14px;
   }
   
   .charging-text {
@@ -609,21 +609,21 @@
   .charging-guns {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 16px;
   }
   
   .charging-gun {
     background-color: #f0f0f0;
-    border-radius: 4px;
-    padding: 10px;
+    border-radius: 6px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
   }
   
   .charging-gun.charging {
     background-color: #e3f2fd;
-    border-left: 4px solid #2196f3;
+    border-left: 6px solid #2196f3;
   }
   
   .gun-header {
@@ -633,133 +633,133 @@
   }
   
   .max-power {
-    font-size: 11px;
+    font-size: 14px;
     color: #666;
   }
   
   /* 功率条区域 */
   .power-bar-section {
-    margin: 5px 0;
+    margin: 8px 0;
   }
   
   .power-source-label {
-    font-size: 11px;
+    font-size: 14px;
     color: #666;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
   }
   
   .output-power-bar {
-    border-radius: 3px;
+    border-radius: 4px;
   }
   
   /* 功率来源分解 */
   .power-source-bars {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding: 8px;
+    gap: 8px;
+    padding: 12px;
     background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 4px;
+    border-radius: 6px;
   }
   
   .source-bar-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
   }
   
   .source-label {
-    font-size: 10px;
+    font-size: 14px;
     color: #666;
-    width: 35px;
+    width: 45px;
     flex-shrink: 0;
   }
   
   .source-bar {
     flex: 1;
-    border-radius: 2px;
+    border-radius: 4px;
   }
   
   .source-value {
-    font-size: 9px;
+    font-size: 12px;
     color: white;
     font-weight: bold;
-    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
   }
   
   /* 车辆SOC区域 */
   .car-soc-section {
-    padding: 8px;
+    padding: 12px;
     background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 4px;
+    border-radius: 6px;
   }
   
   .car-info-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
   
   .car-capacity {
-    font-size: 10px;
+    font-size: 14px;
     color: #666;
   }
   
   .soc-bar-container {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
   }
   
   .soc-label {
-    font-size: 10px;
+    font-size: 14px;
     color: #666;
-    width: 30px;
+    width: 40px;
     flex-shrink: 0;
   }
   
   .soc-bar {
     flex: 1;
-    border-radius: 3px;
+    border-radius: 4px;
   }
   
   .soc-text {
-    font-size: 10px;
+    font-size: 13px;
     color: white;
     font-weight: bold;
-    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
   }
   
   /* 冷却时间显示 */
   .cooling-time-section {
-    padding: 8px;
+    padding: 12px;
     background-color: rgba(255, 152, 0, 0.1);
-    border: 1px solid rgba(255, 152, 0, 0.3);
-    border-radius: 4px;
+    border: 2px solid rgba(255, 152, 0, 0.3);
+    border-radius: 6px;
     text-align: center;
   }
   
   .cooling-time-label {
-    font-size: 10px;
+    font-size: 14px;
     color: #ff9800;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
   }
   
   .cooling-time-value {
-    font-size: 14px;
+    font-size: 20px;
     font-weight: bold;
     color: #ff6f00;
   }
   
   /* 按钮样式 */
   .connect-btn, .disconnect-btn {
-    margin-top: 5px;
-    padding: 5px 10px;
+    margin-top: 8px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 15px;
   }
   
   .connect-btn {

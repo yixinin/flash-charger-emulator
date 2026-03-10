@@ -297,11 +297,19 @@ class Store {
       });
     });
 
-    // 找出所有等待充电的汽车（未连接且等待时间已过）
+    // 找出所有等待充电的汽车（未连接且等待时间已过或即将过期）
     const now = this.simulationTime.value;
+    const timeMultiplier = this.timeSpeed.value;
+    const deltaTimeMs = 1000 * timeMultiplier; // 每次更新经过的时间（毫秒）
+
     return this.cars.value.filter(car => {
-      return !connectedCarIds.has(car.id) &&
-        (!car.nextChargeTime || car.nextChargeTime <= now);
+      if (connectedCarIds.has(car.id)) return false;
+
+      // 如果没有等待时间限制，或者剩余等待时间小于一次更新的时间增量
+      if (!car.nextChargeTime) return true;
+
+      const remainingTime = car.nextChargeTime - now;
+      return remainingTime <= deltaTimeMs;
     });
   }
 
@@ -309,20 +317,27 @@ class Store {
   autoConnectCars() {
     const timeMultiplier = this.timeSpeed.value;
     const now = this.simulationTime.value;
+    const deltaTimeMs = 1000 * timeMultiplier; // 每次更新经过的时间（毫秒）
 
     // 找出所有空闲且不在冷却期内的充电枪
     const availableGuns: { chargerId: number, gun: ChargingGun }[] = [];
 
     this.chargers.value.forEach(charger => {
       charger.guns.forEach(gun => {
-        // 检查冷却时间（考虑时间流速）
-        // 冷却时间已经根据时间流速计算，直接比较即可
-        const isInCooling = gun.coolingEndTime && gun.coolingEndTime > now;
-        if (!gun.isCharging && !isInCooling) {
-          // 清除已过期的冷却时间
-          if (gun.coolingEndTime && gun.coolingEndTime <= now) {
+        // 检查冷却时间
+        // 如果剩余冷却时间小于一次更新的时间增量，认为冷却结束
+        let isInCooling = false;
+        if (gun.coolingEndTime) {
+          const remainingTime = gun.coolingEndTime - now;
+          isInCooling = remainingTime > deltaTimeMs;
+
+          // 清除已过期或即将过期的冷却时间
+          if (remainingTime <= deltaTimeMs) {
             gun.coolingEndTime = undefined;
           }
+        }
+
+        if (!gun.isCharging && !isInCooling) {
           availableGuns.push({ chargerId: charger.id, gun });
         }
       });
