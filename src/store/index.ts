@@ -111,7 +111,7 @@ class Store {
   ]);
 
   // 时间流速
-  timeSpeed = ref(10); // 时间流速倍率，默认10x
+  timeSpeed = ref(20); // 时间流速倍率，默认10x
 
   // 价格配置
   priceConfig = reactive<PriceConfig>({
@@ -173,6 +173,9 @@ class Store {
   // 模拟数据更新
   updateInterval: number | null = null;
 
+  // 模拟时间（考虑时间流速）
+  simulationTime = ref(Date.now());
+
   // 初始化充电站
   initChargingStation() {
     // 清空现有数据
@@ -193,8 +196,8 @@ class Store {
       const charger: Charger = {
         id: i + 1,
         guns: [
-          { id: 1, power: 0, maxPower: chargerConfig.gunAPower, isCharging: false, coolingEndTime: 0 },
-          { id: 2, power: 0, maxPower: chargerConfig.gunBPower, isCharging: false, coolingEndTime: 0 }
+          { id: 1, power: 0, maxPower: chargerConfig.gunAPower, isCharging: false },
+          { id: 2, power: 0, maxPower: chargerConfig.gunBPower, isCharging: false }
         ],
         batterySOC: 100, // 初始SOC为100%
         batteryCapacity: chargerConfig.batteryCapacity,
@@ -208,12 +211,18 @@ class Store {
     for (let i = 0; i < this.config.carCount; i++) {
       // 随机化电池容量，范围70-130kWh
       const batteryCapacity = 70 + Math.random() * 60;
+
+      // 设置随机等待时间（1-5分钟，模拟世界中的真实时间）
+      const waitMinutes = 1 + Math.random() * 4;
+      const waitTimeMs = waitMinutes * 60 * 1000;
+
       const car: Car = {
         id: i + 1,
         batteryCapacity: batteryCapacity,
-        currentSOC: 2 + Math.random() * 48, // 初始SOC在2%-50%之间
+        currentSOC: 2 + Math.random() * 48,
         targetSOC: 97,
-        chargingPower: 0
+        chargingPower: 0,
+        nextChargeTime: this.simulationTime.value + waitTimeMs
       };
       this.cars.value.push(car);
     }
@@ -288,16 +297,18 @@ class Store {
       });
     });
 
-    // 找出所有等待充电的汽车
+    // 找出所有等待充电的汽车（未连接且等待时间已过）
+    const now = this.simulationTime.value;
     return this.cars.value.filter(car => {
-      return !connectedCarIds.has(car.id);
+      return !connectedCarIds.has(car.id) &&
+        (!car.nextChargeTime || car.nextChargeTime <= now);
     });
   }
 
   // 自动连接汽车到空闲充电枪
   autoConnectCars() {
     const timeMultiplier = this.timeSpeed.value;
-    const now = Date.now();
+    const now = this.simulationTime.value;
 
     // 找出所有空闲且不在冷却期内的充电枪
     const availableGuns: { chargerId: number, gun: ChargingGun }[] = [];
@@ -343,12 +354,18 @@ class Store {
   createNewCar(): Car {
     const maxCarId = this.cars.value.reduce((max, car) => Math.max(max, car.id), 0);
     const batteryCapacity = 70 + Math.random() * 60;
+
+    // 设置随机等待时间（1-5分钟，模拟世界中的真实时间）
+    const waitMinutes = 1 + Math.random() * 4;
+    const waitTimeMs = waitMinutes * 60 * 1000;
+
     const newCar: Car = {
       id: maxCarId + 1,
       batteryCapacity: batteryCapacity,
-      currentSOC: 2 + Math.random() * 48, // 初始SOC在2%-50%之间
+      currentSOC: 2 + Math.random() * 48,
       targetSOC: 97,
-      chargingPower: 0
+      chargingPower: 0,
+      nextChargeTime: this.simulationTime.value + waitTimeMs
     };
     this.cars.value.push(newCar);
     return newCar;
@@ -358,7 +375,7 @@ class Store {
   distributePower() {
     // 考虑时间流速倍率
     const timeMultiplier = this.timeSpeed.value;
-    const now = Date.now();
+    const now = this.simulationTime.value;
 
     // 基础时间单位是1秒，考虑时间流速后的实际经过时间（秒）
     const deltaTimeSeconds = 1 * timeMultiplier;
@@ -509,10 +526,10 @@ class Store {
               // 增加汽车充电计数
               this.timePeriodStats.carChargeCount++;
 
-              // 设置随机冷却时间（3-5分钟），考虑时间流速
+              // 设置随机冷却时间（3-5分钟，模拟世界中的真实时间）
               const intervalMinutes = 3 + Math.random() * 2;
-              const realIntervalMs = (intervalMinutes * 60 * 1000) / timeMultiplier;
-              gun.coolingEndTime = Date.now() + realIntervalMs;
+              const intervalMs = intervalMinutes * 60 * 1000;
+              gun.coolingEndTime = this.simulationTime.value + intervalMs;
               gun.car.chargingPower = 0;
               gun.car = undefined;
             }
@@ -625,6 +642,11 @@ class Store {
 
   // 模拟数据更新
   updateData() {
+    // 更新模拟时间（考虑时间流速）
+    const timeMultiplier = this.timeSpeed.value;
+    const deltaTimeMs = 1000 * timeMultiplier; // 每次更新经过的时间（毫秒）
+    this.simulationTime.value += deltaTimeMs;
+
     // 先尝试连接空闲的充电枪
     this.autoConnectCars();
     // 然后分配功率和处理充电逻辑
@@ -701,3 +723,4 @@ if (typeof window !== 'undefined') {
 }
 
 export default store;
+export { store };

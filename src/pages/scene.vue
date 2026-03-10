@@ -10,7 +10,7 @@
               v-model="timeSpeed"
               :min="1"
               :max="50"
-              :step="5"
+              :step="1"
               label="时间流速倍率"
               thumb-label
               color="primary"
@@ -281,19 +281,15 @@
     store.disconnectCar(chargerId, gunId);
   };
   
-  // 计算剩余冷却时间（考虑时间流速）
+  // 计算剩余冷却时间（模拟时间）
   const getRemainingCoolingTime = (coolingEndTime?: number) => {
     if (!coolingEndTime) return '';
     
-    const now = Date.now();
+    const now = store.simulationTime.value;
     const remainingMs = Math.max(0, coolingEndTime - now);
     
-    // 转换为秒（真实时间）
-    const remainingRealSeconds = remainingMs / 1000;
-    
-    // 转换为模拟时间（考虑时间流速）
-    const timeMultiplier = timeSpeed.value;
-    const remainingSimulatedSeconds = remainingRealSeconds * timeMultiplier;
+    // 转换为秒（模拟时间）
+    const remainingSimulatedSeconds = remainingMs / 1000;
     
     if (remainingSimulatedSeconds < 60) {
       return `${Math.floor(remainingSimulatedSeconds)}秒`;

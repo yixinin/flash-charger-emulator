@@ -111,8 +111,8 @@
         <v-data-table
           :items="gunStatsItems"
           :headers="gunStatsHeaders"
-          class="elevation-1"
-        >
+          class="elevation-1 gun-stats-table"
+        > 
           <template v-slot:item.totalChargeTime="{ item }">
             {{ formatTime(item.totalChargeTime) }}
           </template>
@@ -148,10 +148,10 @@
   
   // 充电枪统计数据表格头
   const gunStatsHeaders = [
-    { text: '充电枪', value: 'gunId' },
-    { text: '总充电时间', value: 'totalChargeTime' },
-    { text: '总空闲时间', value: 'totalIdleTime' },
-    { text: '充电量 (kWh)', value: 'chargingAmount' }
+    { title: '充电枪', value: 'gunId' },
+    { title: '总充电时间', value: 'totalChargeTime' },
+    { title: '总空闲时间', value: 'totalIdleTime' },
+    { title: '充电量 (kWh)', value: 'chargingAmount' }
   ];
   
   // 充电枪统计数据表格数据
@@ -224,4 +224,28 @@
 </script>
 
 <style scoped>
+  /* 充电枪统计表格样式 */
+  :deep(.gun-stats-table .v-data-table__th) {
+    background-color: #e8eaf6 !important;
+    color: #1a237e !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+  }
+  
+  :deep(.gun-stats-table .v-data-table__th span) {
+    color: #1a237e !important;
+  }
+  
+  :deep(.gun-stats-table .v-data-table__wrapper) {
+    border: 1px solid #c5cae9;
+    border-radius: 4px;
+  }
+  
+  :deep(.gun-stats-table .v-data-table__tr:hover) {
+    background-color: #f5f7ff !important;
+  }
+  
+  :deep(.gun-stats-table .v-data-table__tr:hover td) {
+    color: #1a237e !important;
+  }
 </style>
