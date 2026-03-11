@@ -15,5 +15,13 @@
 </template>
 
 <script lang="ts" setup>
-  //
+  import { onMounted } from 'vue';
+  import { useStore } from './store';
+
+  const store = useStore();
+
+  onMounted(async () => {
+    await store.initChargingStation();
+    store.startSimulation();
+  });
 </script>

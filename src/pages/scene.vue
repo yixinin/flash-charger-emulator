@@ -162,6 +162,10 @@
                         </template>
                       </v-progress-linear>
                     </div>
+                    <div v-if="gun.remainingTime && gun.remainingTime > 0" class="remaining-time-section">
+                      <span class="remaining-time-label">剩余时间</span>
+                      <span class="remaining-time-value">{{ formatRemainingTime(gun.remainingTime) }}</span>
+                    </div>
                   </div>
                   
                   <!-- 冷却时间显示 -->
@@ -297,6 +301,23 @@
       const minutes = Math.floor(remainingSimulatedSeconds / 60);
       const seconds = Math.floor(remainingSimulatedSeconds % 60);
       return `${minutes}分${seconds}秒`;
+    }
+  };
+  
+  // 格式化剩余充电时间
+  const formatRemainingTime = (seconds: number) => {
+    if (!seconds || seconds <= 0) return '0秒';
+    
+    if (seconds < 60) {
+      return `${Math.floor(seconds)}秒`;
+    } else if (seconds < 3600) {
+      const minutes = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${minutes}分${secs}秒`;
+    } else {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      return `${hours}小时${minutes}分`;
     }
   };
   
@@ -770,5 +791,27 @@
   .disconnect-btn {
     background-color: #f44336;
     color: white;
+  }
+  
+  .remaining-time-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding: 8px;
+    background-color: #e3f2fd;
+    border-radius: 4px;
+  }
+  
+  .remaining-time-label {
+    font-size: 12px;
+    color: #1976d2;
+    font-weight: 500;
+  }
+  
+  .remaining-time-value {
+    font-size: 14px;
+    color: #1565c0;
+    font-weight: 600;
   }
 </style>
