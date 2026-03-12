@@ -16,16 +16,13 @@ type ChargerConfig struct {
 
 // PriceConfig 价格配置
 type PriceConfig struct {
-	GridPrice     float64 `json:"gridPrice"`
-	ServiceFee    float64 `json:"serviceFee"`
-	ChargingPrice float64 `json:"chargingPrice"`
+	GridPrice  float64 `json:"gridPrice"`
+	ServiceFee float64 `json:"serviceFee"`
 }
 
 // LossConfig 损耗配置
 type LossConfig struct {
 	GridToBattery float64 `json:"gridToBattery"`
-	BatteryToCar  float64 `json:"batteryToCar"`
-	GridToCar     float64 `json:"gridToCar"`
 }
 
 // Car 汽车
@@ -140,14 +137,11 @@ func NewStore() *Store {
 			},
 			TimeSpeed: 20,
 			PriceConfig: PriceConfig{
-				GridPrice:     0.5,
-				ServiceFee:    0.3,
-				ChargingPrice: 0.8,
+				GridPrice:  0.8,
+				ServiceFee: 0.3,
 			},
 			LossConfig: LossConfig{
 				GridToBattery: 2,
-				BatteryToCar:  2,
-				GridToCar:     2,
 			},
 		},
 		FinanceData: FinanceData{
@@ -375,9 +369,9 @@ func (s *Store) distributePower() {
 		totalChargingDemand += chargerDemand
 	}
 
-	gridToCarLoss := 1 - s.Config.LossConfig.GridToCar/100
+	gridToCarLoss := 1 - s.Config.LossConfig.GridToBattery/100
 	gridToBatteryLoss := 1 - s.Config.LossConfig.GridToBattery/100
-	batteryToCarLoss := 1 - s.Config.LossConfig.BatteryToCar/100
+	batteryToCarLoss := 1 - s.Config.LossConfig.GridToBattery/100
 
 	gridEnergyInput := 0.0
 	batteryEnergyInput := 0.0
@@ -529,13 +523,9 @@ func (s *Store) distributePower() {
 
 	gridCost := gridEnergyInput * s.Config.PriceConfig.GridPrice
 	carPaymentEnergy := carEnergyReceived / gridToCarLoss
-	userPayment := carPaymentEnergy * (s.Config.PriceConfig.ChargingPrice + s.Config.PriceConfig.ServiceFee)
-	revenue := carPaymentEnergy * s.Config.PriceConfig.ServiceFee
-	batteryLossCost := (batteryEnergyInput - batteryEnergyOutput) * s.Config.PriceConfig.GridPrice
-	totalCost := gridCost + batteryLossCost
-	profit := revenue - totalCost
+	userPayment := carPaymentEnergy * (s.Config.PriceConfig.GridPrice + s.Config.PriceConfig.ServiceFee)
+	profit := carEnergyReceived * s.Config.PriceConfig.ServiceFee
 
-	s.FinanceData.TotalCost += totalCost
 	s.FinanceData.TotalRevenue += userPayment
 	s.FinanceData.TotalProfit += profit
 
@@ -554,7 +544,7 @@ func (s *Store) distributePower() {
 	s.TimePeriodStats.BatteryChargeAmount += batteryEnergyInput
 	s.TimePeriodStats.BatteryChargeAmountCost += batteryEnergyInput * s.Config.PriceConfig.GridPrice
 
-	batteryLoss := batteryEnergyInput * (1 - s.Config.LossConfig.GridToBattery/100)
+	batteryLoss := batteryEnergyInput * s.Config.LossConfig.GridToBattery / 100
 	s.TimePeriodStats.BatteryLossAmount += abs(batteryLoss)
 	s.TimePeriodStats.BatteryLossAmountCost += batteryLoss * s.Config.PriceConfig.GridPrice
 

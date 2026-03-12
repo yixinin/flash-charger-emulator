@@ -4,50 +4,6 @@
       <v-card-title>配置面板</v-card-title>
       <v-card-text>
         <v-form>
-          <!-- 电网功率设置 -->
-          <v-text-field
-            label="电网功率 (kW)"
-            v-model="config.gridPower"
-            type="number"
-            min="0"
-            max="2000"
-            step="100"
-          />
-          
-          <!-- 充电桩数量设置 -->
-          <v-text-field
-            label="充电桩数量"
-            v-model="config.chargerCount"
-            type="number"
-            min="1"
-            max="10"
-            step="1"
-            class="mt-4"
-          />
-          
-          <!-- 充电汽车电池容量设置 -->
-          <v-text-field
-            label="充电汽车电池容量 (kWh) - 实际使用随机数70-130kWh"
-            v-model="config.carBatteryCapacity"
-            type="number"
-            min="70"
-            max="130"
-            step="10"
-            class="mt-4"
-            readonly
-          />
-          
-          <!-- 充电汽车数量设置 -->
-          <v-text-field
-            label="充电汽车数量"
-            v-model="config.carCount"
-            type="number"
-            min="0"
-            max="20"
-            step="1"
-            class="mt-4"
-          />
-          
           <!-- 价格设置 -->
           <h4 class="mt-6">价格设置</h4>
           <v-text-field
@@ -66,38 +22,12 @@
             step="0.01"
             class="mt-2"
           />
-          <v-text-field
-            label="充电电费 (元/kWh)"
-            v-model="priceConfig.chargingPrice"
-            type="number"
-            min="0"
-            step="0.01"
-            class="mt-2"
-          />
           
           <!-- 充放电损耗设置 -->
           <h4 class="mt-6">充放电损耗设置</h4>
           <v-text-field
-            label="电网-储能电池损耗 (%)"
+            label="充放电损耗 (%)"
             v-model="lossConfig.gridToBattery"
-            type="number"
-            min="0"
-            max="100"
-            step="0.1"
-            class="mt-2"
-          />
-          <v-text-field
-            label="储能电池-汽车损耗 (%)"
-            v-model="lossConfig.batteryToCar"
-            type="number"
-            min="0"
-            max="100"
-            step="0.1"
-            class="mt-2"
-          />
-          <v-text-field
-            label="电网-汽车损耗 (%)"
-            v-model="lossConfig.gridToCar"
             type="number"
             min="0"
             max="100"

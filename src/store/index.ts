@@ -14,14 +14,11 @@ export interface ChargerConfig {
 export interface PriceConfig {
   gridPrice: number; // 电网电价（元/kWh）
   serviceFee: number; // 充电服务费（元/kWh）
-  chargingPrice: number; // 充电电费（元/kWh）
 }
 
 // 损耗配置接口
 export interface LossConfig {
-  gridToBattery: number; // 电网-储能电池损耗（%）
-  batteryToCar: number; // 储能电池-汽车损耗（%）
-  gridToCar: number; // 电网-汽车损耗（%）
+  gridToBattery: number; // 充放电损耗（%）
 }
 
 // 充电枪接口
@@ -117,16 +114,13 @@ class Store {
 
   // 价格配置
   priceConfig = reactive<PriceConfig>({
-    gridPrice: 0.5, // 默认电网电价0.5元/kWh
-    serviceFee: 0.3, // 默认充电服务费0.3元/kWh
-    chargingPrice: 0.8 // 默认充电电费0.8元/kWh
+    gridPrice: 0.8, // 默认电网电价0.8元/kWh
+    serviceFee: 0.3 // 默认充电服务费0.3元/kWh
   });
 
   // 损耗配置
   lossConfig = reactive<LossConfig>({
-    gridToBattery: 2, // 默认电网-储能电池损耗2%
-    batteryToCar: 2, // 默认储能电池-汽车损耗2%
-    gridToCar: 2 // 默认电网-汽车损耗2%
+    gridToBattery: 2 // 默认充放电损耗2%
   });
 
   // 充电站状态
