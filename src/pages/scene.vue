@@ -201,7 +201,10 @@
   const cars = computed(() => store.cars.value);
   const timeSpeed = computed({
     get: () => store.timeSpeed.value,
-    set: (value) => { store.timeSpeed.value = value; }
+    set: (value) => { 
+      store.timeSpeed.value = value; 
+      store.updateConfig({ timeSpeed: value });
+    }
   });
   
   // 计算总功率
