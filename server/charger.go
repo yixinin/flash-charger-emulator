@@ -276,7 +276,7 @@ func (s *Store) autoConnectCars() {
 			var isInCooling bool
 			if gun.CoolingEndTime > 0 {
 				remainingTime := gun.CoolingEndTime - now
-				isInCooling = remainingTime > deltaTimeMs
+				isInCooling = remainingTime > 0
 				if remainingTime <= deltaTimeMs {
 					gun.CoolingEndTime = 0
 				}
